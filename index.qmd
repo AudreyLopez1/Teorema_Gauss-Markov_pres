@@ -1,0 +1,202 @@
+---
+title: "MCO y errores del modelo de acuerdo a los supuestos del Teorema Gauss-Markov." 
+author: "Chávez Huapeo Jacqueline, Flores Ochoa Sofia Libertad, Mendoza Esteban Lizzet, López Carmona Audrey Carolina, Rosas Moreno Alesi"
+format: revealjs
+---
+
+#### Mínimos Cuadrados Ordinarios(MCO)
+
+Es una regresión lineal común donde se obtiene estimaciones de parámetros, que describe la relación entre una o más variables cuantitativas independiente y una variable dependiente.
+
+**¿Cómo se estima?** Suponemos $$Y_i=\hat{\beta_1}+\hat{\beta_2}Xi+\hat{u_i}$$ y la parte de los residuos los definimos como: $$\hat{u_i}=Y_i-\hat{Y_i}=Y_i-\hat{\beta_1}-\hat{\beta_2}Xi$$ $$\sum\hat{u_i}=\sum(Y_i-\hat{Y_i})^2$$
+
+## 
+
+Con eso definido, buscamos reducir la diferencia $$\frac{\partial (Y_i-\hat{\beta_1}-\hat{\beta_2}Xi)^2}{\partial \hat{\beta_1}}=2\sum(Y_i\hat\beta_1-\hat\beta_2X_i)=0$$ hay que observar que suponemos que n observaciones por lo tanto: $$\sum Y_i-n\hat\beta_1-\beta_2\sum X_i=0$$ y despejamos:
+
+$$\hat\beta_1=\bar Y+ \hat\beta_2\bar X$$
+
+## 
+
+Para el caso de $\hat\beta_2$
+
+$\frac{\partial (Y_i-\hat{\beta_1}-\hat{\beta_2}Xi)^2}{\partial \hat{\beta_2}}=2\sum(Y_i\hat\beta_1-\hat\beta_2X_i)X_i=-2\sum\hat u_iX_i=0$ desarollamos y reemplazamos el valor de $\hat\beta_1$
+
+$$\sum(X_i Y_i)=\hat\beta_1\sum(X_i)+\hat\beta_2\sum(X_i^2)$$
+
+$$\sum(X_i Y_i)-\bar Y\sum X_i= \hat\beta\_2\sum X_i\ ^2- \bar X\sum X_i$$
+
+$$\hat\beta_2=\frac{\sum{X_i Y_i}-\bar Y\sum(X_i)}{\sum(X_i^2) - \bar X\sum(X_i)}$$
+
+
+## 
+### Supestos del Teorema Gauss-Markov
+
+#### 1. Linealidad en los parámetros  
+
+El modelo es lineal en los coeficientes.  
+Cada regresor contribuye de manera aditiva y proporcional.  
+
+$$
+Y_i = \beta_0 + \beta_1 X_{i} + \varepsilon_i
+$$
+
+#### 2. Los valores de $X$ son fijos  
+
+Establece que los valores de las variables explicativas se consideran fijos en muestras repetidas y son independientes del término de error o perturbación.
+
+##
+
+#### 3. Media condicional de los errores  
+
+El error tiene esperanza cero.  
+El modelo no se inclina sistemáticamente hacia arriba o hacia abajo.  
+
+$$
+E(\varepsilon_i \mid X) = 0
+$$
+
+#### 4. Homocedasticidad  
+
+La varianza del error es la misma en todos los niveles de $X$.  
+
+
+$$
+\operatorname{Var}(\varepsilon_i \mid X) = \sigma^2
+$$
+
+##
+
+#### 5. No autocorrelación  
+
+Los errores no guardan memoria entre sí.  
+El error de una observación no predice el de otra.  
+
+$$
+\operatorname{Cov}(\varepsilon_i, \varepsilon_j \mid X) = 0, \quad i \neq j
+$$
+
+#### 6. Los errores son no correlacionados con las variables explicativas  
+*(Exogeneidad / media condicional cero)*  
+
+“Dado lo que sé de $X$, el promedio del error es cero.”  
+
+
+$$
+E(\varepsilon \mid X) = 0 \quad \Leftrightarrow \quad \operatorname{Cov}(\varepsilon, X_k) = 0
+$$
+
+##
+
+#### 7. El número de observaciones debe ser mayor al número de parámetros a estimar  
+*(Identificación y grados de libertad)*  
+
+“Necesito más datos que incógnitas para identificar el modelo y medir el error.”  
+
+- $n =$ número de observaciones  
+- $p =$ número de parámetros (incluye intercepto)  
+
+**Grados de libertad:**  
+
+$$
+n - p > 0
+$$
+
+##
+
+#### 8. Los valores de cada vector en $X$ no son iguales  
+*(No es constante / no todos sus valores son iguales)*  
+
+“Para identificar el efecto de un regresor, éste debe cambiar en los datos.”  
+
+
+$$
+\operatorname{Var}(X_k) > 0
+$$
+
+
+#### 9. El modelo está bien especificado  
+*(Forma funcional y variables relevantes/irrelevantes)*  
+
+“La forma del modelo es la adecuada y las variables relevantes están incluidas.”  
+
+
+$$
+E(Y \mid X) = X\beta
+$$
+
+##
+
+#### 10. No hay multicolinealidad perfecta  
+*(Rango completo de $X$)*  
+
+“Ningún regresor es combinación lineal exacta de otros.”  
+
+**Condición:**  
+
+$$
+X'X \; \text{es invertible.}
+$$
+
+
+
+## Errores del modelo de acuerdo a los supuestos
+
+### 1. Multicolinealidad
+
+Correlación fuerte entre variables explicativas.
+
+***Consecuencias:*** Varianzas grandes, coeficientes imprecisos, dificultad para interpretar. 
+
+***Detección:*** R² alto pero t pequeños, Correlaciones \> 0.8, FIV \> 10 
+
+***Corrección**:* Eliminar variables correlacionadas , Usar transformaciones, Aumentar muestra
+
+##
+
+### 2. Heterocedasticidad
+
+Varianza no constante de los errores. 
+***Consecuencias:*** Errores estándar incorrectos, pruebas t y F poco fiables. 
+
+***Detección:*** Gráficos de residuos, Pruebas de Park, Glejser y White 
+***Corrección:*** Mínimos cuadrados ponderados, Errores robustos, Transformaciones logarítmicas
+
+## 
+
+
+### 3. Autocorrelación
+
+Correlación entre errores (común en series de tiempo).
+
+*Consecuencias:* Estimaciones ineficientes, hipótesis inválidas.
+
+*Detección:* Gráficos de residuos, Durbin-Watson, Breusch-Godfrey
+
+*Corrección:* Revisar modelo, Usar MCG/MCGF, Corrección de Newey-West
+
+##
+
+### 4.Error de Especificación
+
+Es una violación al Supuesto 9 del MCRL, que establece que "el modelo está correctamente especificado, por lo que no hay sesgo de especificación".
+
+*Consecuencias:* Cuando ocurre un error de especificación: Se violan los supuestos del MCRL,el estimador de MCO pierde la propiedad de ser MELI(insesgado y de varianza mínima).
+
+## 
+
+### ¿Cuándo no se cumplen los supuestos?
+
+1.  **Error de específicación.** Este comete una violación al supuesto 1 de linealidad en los parámetros y a su vez el 9 que nos dice que el modelo está bien especificado.
+
+2.  **Error de Multicolinealidad.** Va directamente en contra de del supuesto 10 que nos dice que no hay multicolinealidad perfecta. Esto produce coeficientes inestables, errores estándar grandes y mala precisión en las inferencias.
+
+# 
+
+3.  **Error de Heterocedasticidad.** Este error esta dado por $Var(\epsilon_i)\neq\sigma^2$ Afecta directamente al supuesto 4 que nos dice que la varianza del modelo es homoscedástica. Lo que afecta la efciencia, los erroes estandar e incluso pueden cometer errores de significancia.
+
+4.  **Error de Autocorrelación.** Este error viola el supuesto 6 que nos dice que los errores son no correlacionados con las variables explicativas. Pierde precisión y confiabilidad en la inferencia estadística.
+
+
+
+# ¡GRACIAS! {.center}
